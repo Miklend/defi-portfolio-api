@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2023",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "paths": {
+      "@adapters/*":["./src/adapters/*"],
+      "@chains/*":["./src/chains/*"],
+      "@common/*":["./src/common/*"],
+      "@portfolio/*":["./src/portfolio/*"],
+      "@tokens/*":["./src/tokens/*"],
+      "@config/*":["./src/config/*"],
+      "@logger/*":["./src/logger/*"],
+    },
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "noFallthroughCasesInSwitch": false
+  }
+}
