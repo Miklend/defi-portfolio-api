@@ -33,18 +33,21 @@ export class PortfolioService {
       const resultsByChain = await this.multicallService.executeMulticall(flatCalls);
       this.logger.debug(`Multicall executed for ${Object.keys(resultsByChain).length} chains`);
 
-      // 3. Собираем все токены по адаптерам
+      // 3. Собираем токены
       const uniqueTokensMap = new Map<string, TokenDTO>();
       const adapterTokenGroups: {
         adapter: ProtocolAdapter;
         tokensByType: Record<string, TokenDTO[]>;
       }[] = [];
+      const portfolios: PortfolioDTO[] = [];
 
       for (const adapter of this.adapters) {
         if (adapter instanceof ApiProtocolAdapter) {
           this.logger.debug(`[${adapter.adapterName}] using API adapter`);
           const portfolio = await adapter.buildPortfolioFromApi(wallet);
-          adapterTokenGroups.push({ adapter, tokensByType: {} });
+          if (portfolio) {
+            portfolios.push(portfolio);
+          }
           continue;
         }
 
@@ -81,9 +84,7 @@ export class PortfolioService {
         enrichedMap.set(key, t);
       }
 
-      // 5. Сборка итогового портфеля
-      const portfolios: PortfolioDTO[] = [];
-
+      // 5. Собираем портфель из enrich-токенов
       for (const { adapter, tokensByType } of adapterTokenGroups) {
         if (!tokensByType || Object.keys(tokensByType).length === 0) continue;
 

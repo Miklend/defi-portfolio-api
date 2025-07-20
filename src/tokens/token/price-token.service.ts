@@ -93,10 +93,16 @@ export class PriceService {
 
     await Promise.all(
       Object.entries(tokensByChain).map(async ([chain, chainTokens]) => {
+        if (!chainTokens || chainTokens.length === 0) return;
         const addresses = chainTokens.map((t) => t.token_address.toLowerCase());
         const prices = await this.fetchPricesWithRetry(addresses, chain);
 
         for (const token of chainTokens) {
+          if (!token.token_address || !token.formatted_amount) {
+            this.logger.warn(`Token missing address or amount: ${JSON.stringify(token)}`);
+            enriched.push(token);
+            continue;
+          }
           const price = prices[token.token_address.toLowerCase()] ?? 0;
           const amount = parseFloat(token.formatted_amount ?? '0');
           if (amount <= 0 || price <= 0) 
@@ -126,6 +132,10 @@ export class PriceService {
   }
 
   private tokenKey(t: TokenDTO): string {
+    if (!t.token_address || !t.raw_amount || !t.chain) {
+      this.logger.warn(`Token missing address, amount or chain: ${JSON.stringify(t)}`);
+      return `${t.symbol ?? 'unknown'}_${t.raw_amount}_${t.chain ?? 'unknown'}`;
+    }
     return `${t.token_address.toLowerCase()}_${t.raw_amount}_${t.chain ?? 'unknown'}`;
   }
 
