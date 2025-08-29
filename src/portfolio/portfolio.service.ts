@@ -1,6 +1,6 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { APP_ADAPTERS } from './portfolio.module';
-import { ProtocolAdapter } from '@adapters/base/protocol-adapter';
+import { ContractProtocolAdapter } from '@adapters/base/protocol-adapter-contracts';
 import { ApiProtocolAdapter } from '@adapters/base/protocol-adapter-api';
 import { MulticallService } from '@chains/multicall.service';
 import { PortfolioDTO } from '@portfolio/dto/portfolio-item.interface';
@@ -13,7 +13,7 @@ export class PortfolioService {
 
   constructor(
     @Inject(APP_ADAPTERS)
-    private readonly adapters: ProtocolAdapter[],
+    private readonly adapters: ContractProtocolAdapter[],
     private readonly multicallService: MulticallService,
     private readonly priceService: PriceService,
   ) {}
@@ -36,7 +36,7 @@ export class PortfolioService {
       // 3. Собираем токены
       const uniqueTokensMap = new Map<string, TokenDTO>();
       const adapterTokenGroups: {
-        adapter: ProtocolAdapter;
+        adapter: ContractProtocolAdapter;
         tokensByType: Record<string, TokenDTO[]>;
       }[] = [];
       const portfolios: PortfolioDTO[] = [];

@@ -8,8 +8,8 @@ export abstract class ProtocolAdapter {
   abstract serviceName: string;
   abstract chainName: string;
 
-  abstract getMulticallCalls(user: string): Promise<MulticallCall<readonly unknown[], string>[]>;
-  abstract parseMulticallResults(results: MulticallResult<any>[]): Promise<Record<string, TokenDTO[]>>;
+  // abstract getMulticallCalls(user: string): Promise<MulticallCall<readonly unknown[], string>[]>;
+  // abstract parseMulticallResults(results: MulticallResult<any>[]): Promise<Record<string, TokenDTO[]>>;
 
   async buildPortfolioFromTokens(
     user: string,

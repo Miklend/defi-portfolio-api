@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Address } from 'viem';
-import { ProtocolAdapter } from '@adapters/base/protocol-adapter';
+import { ContractProtocolAdapter } from '@adapters/base/protocol-adapter-contracts';
 import { MulticallCall, MulticallResult } from '@common/types/multicall-call.interface';
 import { TokenDTO } from '@tokens/types/token.interface'
 import { parserAaveType } from '@common/helpers/aave-type'
 import { ABIGetUserReservesIncentiveData } from '@adapters/zerolend/abi'
 
 @Injectable()
-export class AdapterZerolandZksync extends ProtocolAdapter {
+export class AdapterZerolandZksync extends ContractProtocolAdapter {
   adapterName = 'ZerolandZksync';
   protocolName = 'Zeroland';
   serviceName = 'Lending Pool';
